@@ -1,6 +1,7 @@
 package cn.wzvtc.soft;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,19 +13,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = {"http://127.0.0.1:5500"})
+@CrossOrigin(origins = {"http://127.0.0.1:5500"},allowCredentials = "true")
 @RestController
 public class TestController {
 
-    List<String> list = new ArrayList<>();
+    @Autowired
+    LvliRepository lvliRepository;
 
-    @RequestMapping(value = "/lvli")
-    public void lvli(String lvli) {
-        this.list.add(lvli);
+    @RequestMapping(value = "/addlvli")
+    public void addlvli(String lvli) {
+        Lvli lvli1=new Lvli("1202",lvli);
+
+        this.lvliRepository.save(lvli1);
     }
+
     @RequestMapping(value = "/lvlilist")
-    public List<String> lvli() {
-        return this.list;
+    public List<Lvli> getlvlilist() {
+        return this.lvliRepository.findAll();
     }
 
 
